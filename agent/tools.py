@@ -3,6 +3,9 @@ from bs4 import BeautifulSoup
 
 
 def fetch_url_context(url: str) -> str:
+    """
+    Fetches the content of the url as plain text
+    """
     try:
         response = requests.get(url)
         response.raise_for_status()
