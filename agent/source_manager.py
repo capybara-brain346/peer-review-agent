@@ -1,67 +1,76 @@
 import uuid
 from typing import List, Set
-import chromadb
-from chromadb.utils import embedding_functions
+from langchain_community.vectorstores import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
 class SourceManager:
     def __init__(self, persistence_path: str = "agent/source_store"):
-        self.client = chromadb.PersistentClient(path=persistence_path)
-
-        self.embedding_function = (
-            embedding_functions.SentenceTransformerEmbeddingFunction(
-                model_name="all-MiniLM-L6-v2"
-            )
+        self.embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        self.vector_store = Chroma(
+            collection_name="source_materials",
+            embedding_function=self.embeddings,
+            persist_directory=persistence_path,
         )
-
-        self.collection = self.client.get_or_create_collection(
-            name="source_materials", embedding_function=self.embedding_function
+        self.text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=1000,
+            chunk_overlap=200,
+            length_function=len,
         )
 
     def add_source(self, content: str, source_name: str) -> None:
-        chunks = [p.strip() for p in content.split("\n\n") if p.strip()]
-
-        if not chunks:
+        if not content.strip():
             return
 
-        ids = [f"{source_name}_{i}_{str(uuid.uuid4())[:8]}" for i in range(len(chunks))]
+        raw_doc = Document(page_content=content, metadata={"source": source_name})
 
-        metadatas = [
-            {"source": source_name, "chunk_index": i} for i in range(len(chunks))
-        ]
+        docs = self.text_splitter.split_documents([raw_doc])
 
-        self.collection.add(documents=chunks, metadatas=metadatas, ids=ids)
-        print(f"Added source '{source_name}' with {len(chunks)} chunks.")
+        if not docs:
+            return
+
+        for i, doc in enumerate(docs):
+            doc.metadata["chunk_index"] = i
+            doc.metadata["source"] = source_name
+            doc.id = f"{source_name}_{i}_{str(uuid.uuid4())[:8]}"
+
+        self.vector_store.add_documents(docs)
+        print(f"Added source '{source_name}' with {len(docs)} chunks.")
 
     def search_sources(self, query: str, k: int = 3) -> List[str]:
-        results = self.collection.query(query_texts=[query], n_results=k)
-
-        if results and results["documents"]:
-            return results["documents"][0]
-        return []
+        results = self.vector_store.similarity_search(query, k=k)
+        return [doc.page_content for doc in results]
 
     def list_sources(self) -> List[str]:
-        result = self.collection.get(include=["metadatas"])
-
-        sources: Set[str] = set()
-        if result["metadatas"]:
-            for meta in result["metadatas"]:
-                if "source" in meta:
-                    sources.add(meta["source"])
-
-        return list(sources)
+        try:
+            result = self.vector_store._collection.get(include=["metadatas"])
+            sources: Set[str] = set()
+            if result["metadatas"]:
+                for meta in result["metadatas"]:
+                    if "source" in meta:
+                        sources.add(meta["source"])
+            return list(sources)
+        except Exception as e:
+            print(f"Error listing sources: {e}")
+            return []
 
     def get_source_content(self, source_name: str) -> str:
-        result = self.collection.get(
-            where={"source": source_name}, include=["documents", "metadatas"]
-        )
+        try:
+            result = self.vector_store._collection.get(
+                where={"source": source_name}, include=["documents", "metadatas"]
+            )
 
-        if not result["documents"]:
+            if not result["documents"]:
+                return ""
+
+            chunks_with_meta = zip(result["documents"], result["metadatas"])
+            sorted_chunks = sorted(
+                chunks_with_meta, key=lambda x: x[1].get("chunk_index", 0)
+            )
+
+            return "\n\n".join([chunk for chunk, _ in sorted_chunks])
+        except Exception as e:
+            print(f"Error getting source content: {e}")
             return ""
-
-        chunks_with_meta = zip(result["documents"], result["metadatas"])
-        sorted_chunks = sorted(
-            chunks_with_meta, key=lambda x: x[1].get("chunk_index", 0)
-        )
-
-        return "\n\n".join([chunk for chunk, _ in sorted_chunks])
