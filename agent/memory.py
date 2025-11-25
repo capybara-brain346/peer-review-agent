@@ -32,10 +32,10 @@ class MemoryManager:
             "llm": {
                 "provider": "gemini",
                 "config": {
-                    "model": "gemini-2.0-flash-001",
+                    "model": "gemini-2.5-flash",
                     "temperature": 0.2,
                     "max_tokens": 2000,
-                    "top_p": 1.0,
+                    "top_p": 0.7,
                 },
             },
             "history_store_path": "agent/memory_store/history.db",
@@ -60,6 +60,8 @@ class MemoryManager:
         try:
             logger.debug(f"Fetching history for blog_id: {blog_id}")
             history = self.memory.get_all(user_id=blog_id)
+            if isinstance(history, dict) and "results" in history:
+                history = history["results"]
             return history
         except Exception as e:
             logger.error(f"Error retrieving history for blog_id {blog_id}: {e}")
