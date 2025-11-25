@@ -1,14 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-from typing import List
-from google.adk.tools import google_search
 from .source_manager import SourceManager
 
 
 def fetch_url_context(url: str) -> str:
-    """
-    Fetches the content of the url as plain text
-    """
     try:
         response = requests.get(url)
         response.raise_for_status()
