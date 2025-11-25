@@ -1,4 +1,4 @@
-Peer Review Agent
+### Peer Review Agent
 
 A peer review system for blog posts and technical content. The agent provides detailed feedback on accuracy, clarity, tone, and structure using Google's Gemini model.
 
