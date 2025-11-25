@@ -1,6 +1,6 @@
 Peer Review Agent
 
-An AI-powered peer review system for blog posts and technical content. The agent provides detailed feedback on accuracy, clarity, tone, and structure using Google's Gemini model.
+A peer review system for blog posts and technical content. The agent provides detailed feedback on accuracy, clarity, tone, and structure using Google's Gemini model.
 
 Features
 
