@@ -18,5 +18,4 @@ dependencies = [
     "reportlab>=4.4.5",
     "sentence-transformers>=5.1.2",
     "streamlit>=1.51.0",
-    "nest-asyncio>=1.5.8",
 ]
