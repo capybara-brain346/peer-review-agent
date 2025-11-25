@@ -1,5 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
+from typing import List
+from google.adk.tools import google_search
+from .source_manager import SourceManager
 
 
 def fetch_url_context(url: str) -> str:
@@ -28,3 +31,14 @@ def fetch_url_context(url: str) -> str:
 
     except Exception as e:
         return f"Error fetching content from {url}: {str(e)}"
+
+
+source_manager = SourceManager()
+
+
+def retrieve_source_context(query: str) -> str:
+    results = source_manager.search_sources(query, k=5)
+    if not results:
+        return "No relevant source context found."
+
+    return "\n---\n".join(results)
