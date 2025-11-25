@@ -1,7 +1,7 @@
 import json
 from typing import List, Dict, Any
 from mem0 import Memory
-from .utils.logger import logger
+from agent.utils.logger import logger
 
 
 class MemoryManager:

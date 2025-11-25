@@ -1,8 +1,8 @@
-from .prompts.peer_reviewer_prompt import PEER_REVIEWER_PROMPT
-from .tools import fetch_url_context, retrieve_source_context, google_search
-from .schemas import PeerReviewReport
-from .memory import MemoryManager
-from .utils.logger import logger
+from agent.prompts.peer_reviewer_prompt import PEER_REVIEWER_PROMPT
+from agent.tools import fetch_url_context, retrieve_source_context, google_search
+from agent.schemas import PeerReviewReport
+from agent.memory import MemoryManager
+from agent.utils.logger import logger
 
 from google.adk.agents.llm_agent import LlmAgent
 

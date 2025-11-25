@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-from .source_manager import SourceManager
-from .utils.logger import logger
+from agent.source_manager import SourceManager
+from agent.utils.logger import logger
 
 
 def fetch_url_context(url: str) -> str:
