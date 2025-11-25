@@ -7,9 +7,10 @@ class MemoryManager:
     def __init__(self):
         config = {
             "vector_store": {
-                "provider": "qdrant",
+                "provider": "chroma",
                 "config": {
-                    "path": "agent/memory_store/qdrant",
+                    "collection_name": "peer_review_memory",
+                    "path": "agent/memory_store/chroma",
                 },
             },
             "embedder": {
