@@ -1,10 +1,14 @@
+import os
 import uuid
 from typing import List, Set
 from langchain_community.vectorstores import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
 from agent.utils.logger import logger
+
+os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 
 
 class SourceManager:
@@ -13,7 +17,11 @@ class SourceManager:
             logger.info(
                 f"Initializing SourceManager with persistence path: {persistence_path}"
             )
-            self.embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+            self.embeddings = HuggingFaceEmbeddings(
+                model_name="all-MiniLM-L6-v2",
+                model_kwargs={"device": "cpu"},
+                encode_kwargs={"normalize_embeddings": True},
+            )
             self.vector_store = Chroma(
                 collection_name="source_materials",
                 embedding_function=self.embeddings,

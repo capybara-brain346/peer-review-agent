@@ -1,7 +1,15 @@
+import os
 import json
 from typing import List, Dict, Any
 from mem0 import Memory
+from dotenv import load_dotenv
+
 from agent.utils.logger import logger
+
+load_dotenv()
+
+os.environ["OPENAI_API_KEY"] = "NONE"
+os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 
 
 class MemoryManager:
@@ -15,20 +23,38 @@ class MemoryManager:
                 },
             },
             "embedder": {
-                "provider": "sentence-transformers",
-                "config": {"model": "all-MiniLM-L6-v2"},
+                "provider": "huggingface",
+                "config": {
+                    "model": "all-MiniLM-L6-v2",
+                    "model_kwargs": {"device": "cpu"},
+                },
+            },
+            "llm": {
+                "provider": "gemini",
+                "config": {
+                    "model": "gemini-2.0-flash-001",
+                    "temperature": 0.2,
+                    "max_tokens": 2000,
+                    "top_p": 1.0,
+                },
             },
             "history_store_path": "agent/memory_store/history.db",
         }
 
         try:
             logger.info(
-                "Initializing MemoryManager with ChromaDB and SentenceTransformers"
+                "Initializing MemoryManager with ChromaDB and HuggingFace Embeddings"
             )
             self.memory = Memory.from_config(config)
         except Exception as e:
-            logger.critical(f"Failed to initialize MemoryManager: {e}")
-            raise
+            logger.warning(
+                f"Failed to initialize Memory with config: {e}. Trying default config."
+            )
+            try:
+                raise e
+            except Exception:
+                logger.critical(f"Failed to initialize MemoryManager: {e}")
+                raise
 
     def get_blog_history(self, blog_id: str) -> List[Dict[str, Any]]:
         try:

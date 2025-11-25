@@ -1,11 +1,14 @@
 import streamlit as st
 import tempfile
 import os
+from dotenv import load_dotenv
 from agent.agent import peer_reviewer
 from agent.source_manager import SourceManager
 from agent.memory import MemoryManager
 from agent.utils.logger import logger
 from agent.utils.pdf_generator import generate_pdf
+
+load_dotenv()
 
 try:
     source_manager = SourceManager()

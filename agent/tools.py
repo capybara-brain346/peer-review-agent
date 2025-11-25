@@ -1,10 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
+
 from agent.source_manager import SourceManager
 from agent.utils.logger import logger
 
 
 def fetch_url_context(url: str) -> str:
+    """Fetches context about the url and returns plain text"""
     logger.info(f"Fetching URL content: {url}")
     try:
         response = requests.get(url)
@@ -35,15 +37,15 @@ def fetch_url_context(url: str) -> str:
         return f"Error fetching content from {url}: {str(e)}"
 
 
-try:
-    source_manager = SourceManager()
-except Exception as e:
-    logger.critical(f"Failed to initialize SourceManager in tools: {e}")
-    source_manager = None
-
-
 def retrieve_source_context(query: str) -> str:
+    """Retrieve context from documents provided as source"""
     logger.info(f"Retrieving source context for query: '{query}'")
+
+    try:
+        source_manager = SourceManager()
+    except Exception as e:
+        logger.critical(f"Failed to initialize SourceManager in tools: {e}")
+        source_manager = None
 
     if not source_manager:
         logger.error("SourceManager not initialized")
