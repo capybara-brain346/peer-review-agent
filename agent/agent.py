@@ -34,11 +34,6 @@ peer_review_agent = LlmAgent(
 
 
 async def run_peer_review_async(blog_id: str, content: str) -> PeerReviewReport:
-    """
-    Primary async method for running peer review.
-    Uses run_async for efficient concurrent operations.
-    Wraps blocking I/O operations with asyncio.to_thread to prevent stalls.
-    """
     logger.info(f"Starting async peer review for blog_id: {blog_id}")
 
     memory_manager = await asyncio.to_thread(MemoryManager)
