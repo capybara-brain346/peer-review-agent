@@ -5,7 +5,7 @@ from google.adk.agents.llm_agent import LlmAgent
 from google.adk.models.lite_llm import LiteLlm
 
 from agent.prompts.peer_reviewer_prompt import PEER_REVIEWER_PROMPT
-from agent.tools import fetch_url_context, retrieve_source_context
+from agent.tools import fetch_url_context, retrieve_source_context, get_current_datetime
 from agent.schemas import PeerReviewReport
 from agent.sub_agents.google_search_agent import google_search_agent
 
@@ -48,6 +48,7 @@ peer_review_agent = LlmAgent(
     tools=[
         FunctionTool(fetch_url_context),
         FunctionTool(retrieve_source_context),
+        FunctionTool(get_current_datetime),
         agent_tool.AgentTool(google_search_agent),
     ],
     include_contents="none",

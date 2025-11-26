@@ -1,13 +1,11 @@
-from typing import List, Literal
+from typing import List
 from pydantic import BaseModel, Field
 
 
 class MajorIssue(BaseModel):
-    issue_type: Literal["Accuracy", "Structure", "Tone", "Recurring", "Clarity"] = (
-        Field(
-            ...,
-            description="The category of the issue. Use 'Recurring' only if the issue appears in past_feedback_context.",
-        )
+    issue_type: str = Field(
+        ...,
+        description="The category of the issue (e.g., Accuracy, Structure, Tone, Recurring, Clarity, etc.).",
     )
     description: str = Field(
         ...,

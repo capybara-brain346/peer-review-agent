@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 from agent.source_manager import SourceManager
 from agent.utils.logger import logger
@@ -58,3 +59,13 @@ def retrieve_source_context(query: str) -> str:
 
     logger.debug(f"Returning {len(results)} chunks of context")
     return "\n---\n".join(results)
+
+
+def get_current_datetime() -> str:
+    """Get the current date and time in ISO 8601 format"""
+    logger.info("Fetching current date and time")
+    now = datetime.now()
+    iso_format = now.isoformat()
+    human_format = now.strftime("%A, %B %d, %Y at %I:%M:%S %p")
+    logger.debug(f"Current datetime: {iso_format}")
+    return f"Current date and time: {human_format} (ISO: {iso_format})"

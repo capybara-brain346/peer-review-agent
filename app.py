@@ -38,13 +38,15 @@ try:
 
         session_id = f"session_{blog_id}"
         session_service = InMemorySessionService()
+        app_name = "peer_review_agent"
+
         await session_service.create_session(
-            app_name="peer_review_app", user_id=blog_id, session_id=session_id
+            app_name=app_name, user_id=blog_id, session_id=session_id
         )
 
         runner = Runner(
             agent=peer_review_agent,
-            app_name="agent",
+            app_name=app_name,
             session_service=session_service,
         )
 
