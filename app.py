@@ -44,7 +44,7 @@ try:
 
         runner = Runner(
             agent=peer_review_agent,
-            app_name="peer_review_app",
+            app_name="agent",
             session_service=session_service,
         )
 

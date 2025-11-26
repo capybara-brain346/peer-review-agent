@@ -61,7 +61,7 @@ You must output **ONLY** a valid JSON object. Do not include markdown formatting
     "confidential_recommendation": "A tailored note to the editor (e.g., 'Publish with minor edits', 'Reject', 'Needs major rework').",
     "major_issues": [
         {
-            "type": "Accuracy|Structure|Tone|Recurring",
+            "type": "Accuracy|Structure|Tone|Recurring|Clarity",
             "description": "Detailed description of the issue.",
             "evidence": "Link to search result, reference to source_context, or past_feedback_context supporting this critique."
         }

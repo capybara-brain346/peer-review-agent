@@ -3,9 +3,11 @@ from pydantic import BaseModel, Field
 
 
 class MajorIssue(BaseModel):
-    issue_type: Literal["Accuracy", "Structure", "Tone", "Recurring"] = Field(
-        ...,
-        description="The category of the issue. Use 'Recurring' only if the issue appears in past_feedback_context.",
+    issue_type: Literal["Accuracy", "Structure", "Tone", "Recurring", "Clarity"] = (
+        Field(
+            ...,
+            description="The category of the issue. Use 'Recurring' only if the issue appears in past_feedback_context.",
+        )
     )
     description: str = Field(
         ...,

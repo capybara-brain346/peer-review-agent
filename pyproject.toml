@@ -13,6 +13,7 @@ dependencies = [
     "langchain-community>=0.4.1",
     "langchain-huggingface>=1.1.0",
     "langchain-text-splitters>=1.0.0",
+    "litellm>=1.80.5",
     "mem0ai>=0.1.115",
     "python-dotenv>=1.2.1",
     "reportlab>=4.4.5",

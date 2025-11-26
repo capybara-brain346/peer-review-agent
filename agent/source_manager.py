@@ -9,6 +9,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from agent.utils.logger import logger
 
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+os.environ["TRANSFORMERS_OFFLINE"] = "0"
 
 
 class SourceManager:
@@ -17,10 +19,15 @@ class SourceManager:
             logger.info(
                 f"Initializing SourceManager with persistence path: {persistence_path}"
             )
+            import torch
+
+            torch.set_default_device("cpu")
+
             self.embeddings = HuggingFaceEmbeddings(
                 model_name="all-MiniLM-L6-v2",
-                model_kwargs={"device": "cpu"},
+                model_kwargs={"device": "cpu", "trust_remote_code": False},
                 encode_kwargs={"normalize_embeddings": True},
+                show_progress=False,
             )
             self.vector_store = Chroma(
                 collection_name="source_materials",
@@ -28,7 +35,7 @@ class SourceManager:
                 persist_directory=persistence_path,
             )
             self.text_splitter = RecursiveCharacterTextSplitter(
-                chunk_size=1000,
+                chunk_size=800,
                 chunk_overlap=200,
                 length_function=len,
             )
