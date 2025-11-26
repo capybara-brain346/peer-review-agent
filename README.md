@@ -2,6 +2,8 @@
 
 This is a peer review system for blog posts and technical content. It acts like a professional editor who reads your content, fact-checks claims, provides structured feedback, and remembers past reviews to track your progress over time. The system can verify information against both uploaded source materials and external web searches.
 
+<img width="1224" height="984" alt="diagram-export-11-26-2025-4_42_32-PM" src="https://github.com/user-attachments/assets/e218ff6b-e33f-423b-b549-4fc1396d8e93" />
+
 Why does this exist?
 
 Writing quality content requires thorough fact-checking, style review, and consistency. This agent automates the peer review process by combining multiple verification methods: checking against your uploaded reference materials, searching the web for external facts, and maintaining memory of past feedback to catch recurring issues and track improvement.
