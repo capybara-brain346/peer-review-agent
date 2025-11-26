@@ -1,4 +1,4 @@
-Peer Review Agent
+### Peer Review Agent
 
 This is a peer review system for blog posts and technical content. It acts like a professional editor who reads your content, fact-checks claims, provides structured feedback, and remembers past reviews to track your progress over time. The system can verify information against both uploaded source materials and external web searches.
 
