@@ -1,18 +1,18 @@
-### Peer Review Agent
+## Peer Review Agent
 
 This is a peer review system for blog posts and technical content. It acts like a professional editor who reads your content, fact-checks claims, provides structured feedback, and remembers past reviews to track your progress over time. The system can verify information against both uploaded source materials and external web searches.
 
 <img width="1224" height="984" alt="diagram-export-11-26-2025-4_42_32-PM" src="https://github.com/user-attachments/assets/e218ff6b-e33f-423b-b549-4fc1396d8e93" />
 
-Why does this exist?
+### Why does this exist?
 
 Writing quality content requires thorough fact-checking, style review, and consistency. This agent automates the peer review process by combining multiple verification methods: checking against your uploaded reference materials, searching the web for external facts, and maintaining memory of past feedback to catch recurring issues and track improvement.
 
-Model flexibility
+### Model flexibility
 
 The system is provider-agnostic and works with Gemini, OpenAI, Claude, or local Ollama models. Switch between providers by changing a single environment variable - no code modifications required. This gives you the freedom to use the most cost-effective, performant, or private option for your needs.
 
-How it works
+### How it works
 
 The system uses Google's ADK (Agent Development Kit) with your choice of LLM provider (Gemini, OpenAI, Claude, or local Ollama models) to create a sophisticated review agent. When you submit content for review:
 
@@ -24,7 +24,7 @@ The system uses Google's ADK (Agent Development Kit) with your choice of LLM pro
 6. Generates a structured report with major/minor issues and line-by-line comments
 7. Stores the review in memory for future reference
 
-Architecture overview
+### Architecture overview
 
 The application has several key components working together:
 
@@ -57,9 +57,9 @@ Defines the structured output format using Pydantic models:
 Web Interface (app.py)
 Streamlit-based UI for uploading sources, submitting content, viewing reports, and downloading PDFs.
 
-Installation and setup
+### Installation and setup
 
-Requirements:
+**Requirements:**
 
 - Python 3.12 or higher
 - API key for your chosen LLM provider (Gemini, OpenAI, Claude, or none for local Ollama)
@@ -139,9 +139,11 @@ streamlit run app.py
 
 The app will open in your browser at http://localhost:8501
 
-Using the system
+### Using the system
 
-Basic workflow:
+**Basic workflow:**
+
+<img width="1517" height="1872" alt="diagram-export-11-26-2025-4_44_32-PM" src="https://github.com/user-attachments/assets/600b1f08-be65-4665-a7ca-9642aebe9469" />
 
 1. Upload source materials
    In the sidebar, upload text or markdown files that contain reference information. These could be research papers, documentation, data sheets, or any authoritative content you want the agent to verify against. Click "Ingest Source" to add them to the knowledge base.
@@ -176,9 +178,7 @@ Basic workflow:
 6. Download PDF
    Export the review as a PDF for offline reference or sharing.
 
-Understanding the review process
-
-The agent follows a structured workflow defined in the prompt:
+### Understanding the review process
 
 Phase 1: Ingestion
 
@@ -208,7 +208,7 @@ Phase 4: Synthesis
 - References past feedback when relevant
 - Gives actionable, constructive feedback
 
-Memory and learning
+### Memory and learning
 
 The memory system (Mem0) stores every review. For each project:
 
@@ -365,49 +365,3 @@ report = peer_reviewer.review_blog("project_name", "content here")
 ```
 
 The model used will be determined by your environment variables, making it easy to deploy with different LLM backends in different environments (e.g., GPT-4 in production, local Ollama for development).
-
-Security and privacy
-
-- All data stored locally in agent/source_store/ and agent/memory_store/
-- API calls made only to your configured LLM provider (Gemini, OpenAI, Claude, or none for Ollama)
-- Google Search API used only when the agent needs to fact-check external claims
-- Source documents and reviews persist on local filesystem
-- No telemetry or external reporting
-- Use local Ollama models for complete privacy (no external API calls except Google Search)
-
-Future improvements
-
-Potential enhancements:
-
-- Support for multiple document formats (PDF, DOCX)
-- Batch review mode for multiple posts
-- Customizable review criteria via UI
-- Export to multiple formats (HTML, Markdown)
-- Integration with content management systems
-- Multi-language support
-- Team collaboration features
-
-Contributing
-
-This is a personal project but improvements are welcome. Key areas:
-
-- Better error handling
-- Performance optimization for large documents
-- UI/UX improvements
-- Additional LLM provider support
-- More robust PDF generation
-
-License
-
-Check the LICENSE file in the repository for licensing information.
-
-Getting help
-
-Check logs in the logs/ directory for detailed error information. The system uses structured logging with different levels (INFO, DEBUG, ERROR, CRITICAL).
-
-For issues with:
-
-- Google ADK: Check Google ADK documentation
-- Memory system: Check Mem0 documentation
-- Vector search: Check ChromaDB documentation
-- UI issues: Check Streamlit documentation
