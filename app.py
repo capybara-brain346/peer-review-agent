@@ -57,7 +57,7 @@ try:
     {past_feedback_text}
 
     **Source Context:**
-    Use the retrieve_source_context tool if you need to verify information against internal knowledge base.
+    Use the retrieve_source_context tool to search through the uploaded source documents and verify information against them.
 
     Provide a comprehensive peer review report following the output schema requirements."""
 
